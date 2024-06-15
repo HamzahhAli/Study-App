@@ -1,17 +1,20 @@
-"use client"
 import { useState, useEffect } from 'react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
 
 // Helper function to fetch vocabulary list
 const fetchVocabList = (name) => {
-  const vocabKey = `vocabList_${name}`;
-  const storedVocabList = JSON.parse(localStorage.getItem(vocabKey));
-  return storedVocabList || [];
+  if (typeof window !== 'undefined') {
+    const vocabKey = `vocabList_${name}`;
+    const storedVocabList = JSON.parse(localStorage.getItem(vocabKey));
+    return storedVocabList || [];
+  }
+  return [];
 };
 
-const CardInfoPage = () => {
+const SetPage = () => {
   const pathname = usePathname();
+  const router = useRouter();
   const name = pathname.split('/').pop();
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -21,14 +24,18 @@ const CardInfoPage = () => {
   const [vocabList, setVocabList] = useState([]);
 
   useEffect(() => {
-    const initialVocabList = fetchVocabList(name);
-    setVocabList(initialVocabList);
+    if (typeof window !== 'undefined') {
+      const initialVocabList = fetchVocabList(name);
+      setVocabList(initialVocabList);
+    }
   }, [name]);
 
   useEffect(() => {
-    const vocabKey = `vocabList_${name}`;
-    if (vocabList.length > 0) {
-      localStorage.setItem(vocabKey, JSON.stringify(vocabList));
+    if (typeof window !== 'undefined') {
+      const vocabKey = `vocabList_${name}`;
+      if (vocabList.length > 0) {
+        localStorage.setItem(vocabKey, JSON.stringify(vocabList));
+      }
     }
   }, [vocabList, name]);
 
@@ -74,6 +81,10 @@ const CardInfoPage = () => {
 
   return (
     <div>
+      <Button variant="secondary" onClick={() => router.push('/')} className="mb-4" style={{ marginLeft: '10px', marginTop: '10px' }}>
+        Back to Home
+      </Button>
+
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Add Card</Modal.Title>
@@ -165,7 +176,7 @@ const CardInfoPage = () => {
         </ul>
       </div>
       <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-        <Button variant="primary" onClick={handleShow} style={{ width: '1000px', height: '150px', marginTop: '20px', fontSize: '30px' }}>
+        <Button variant="primary" onClick={handleShow} style={{ width: '1000px', height: '100px', fontSize: '20px' }}>
           Add Card
         </Button>
       </div>
@@ -173,4 +184,4 @@ const CardInfoPage = () => {
   );
 };
 
-export default CardInfoPage;
+export default SetPage;
