@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useState } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
 
 // Helper function to fetch vocabulary list
