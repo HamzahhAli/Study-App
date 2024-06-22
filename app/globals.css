@@ -19,7 +19,7 @@ body {
   padding: 0 1rem;
 }
 
-.btn {
+/* .btn {
   display: inline-block;
   background-color: #dfdcdc;
   color: #000000;
@@ -35,7 +35,7 @@ body {
 .btn:hover {
   background-color: #ffffff;
   color: #000000;
-}
+} */
 
 .btn-back {
   display: inline-block;
