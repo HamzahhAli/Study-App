@@ -160,11 +160,7 @@ const HomePage = () => {
       )}
 
       <div className="fixed-bottom text-center mb-4">
-        <Button 
-          className="add-new-set-button" 
-          onClick={handleShow} 
-          style={{ width: '200px', height: '40px', fontSize: '16px' }}
-        >
+        <Button className="add-new-set-button" onClick={handleShow}>
           Add New Set
         </Button>
       </div>
