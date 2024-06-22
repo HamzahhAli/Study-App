@@ -1,9 +1,8 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
 
-// Helper function to fetch vocabulary list
 const fetchVocabList = (name) => {
   if (typeof window !== 'undefined') {
     const vocabKey = `vocabList_${name}`;
@@ -43,6 +42,7 @@ const SetPage = () => {
     setEnteredVocab('');
     setEnteredDef('');
   };
+
   const handleShow = () => setShowModal(true);
 
   const handleEditClose = () => {
@@ -50,6 +50,7 @@ const SetPage = () => {
     setEnteredVocab('');
     setEnteredDef('');
   };
+
   const handleEditShow = (index) => {
     setEditIndex(index);
     setEnteredVocab(vocabList[index][0]);
@@ -63,8 +64,14 @@ const SetPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newSet = [enteredVocab, enteredDef];
-    const updatedVocabList = [newSet, ...vocabList];
+    const updatedVocabList = [...vocabList, newSet];
     setVocabList(updatedVocabList);
+
+    if (typeof window !== 'undefined') {
+      const vocabKey = `vocabList_${name}`;
+      localStorage.setItem(vocabKey, JSON.stringify(updatedVocabList));
+    }
+
     handleClose();
   };
 
@@ -88,7 +95,12 @@ const SetPage = () => {
 
   return (
     <div>
-      <Button variant="secondary" onClick={() => router.push('/')} className="mb-4" style={{ marginLeft: '10px', marginTop: '10px' }}>
+      <Button
+        variant="secondary"
+        onClick={() => router.push('/')}
+        className="mb-4"
+        style={{ marginLeft: '10px', marginTop: '10px' }}
+      >
         Back to Home
       </Button>
 
@@ -117,12 +129,12 @@ const SetPage = () => {
                 required
               />
             </Form.Group>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+              <Button variant="primary" type="submit">Submit</Button>
+            </Modal.Footer>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-          <Button variant="primary" type="submit">Submit</Button>
-        </Modal.Footer>
       </Modal>
 
       <Modal show={showEditModal} onHide={handleEditClose}>
@@ -150,14 +162,14 @@ const SetPage = () => {
                 required
               />
             </Form.Group>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleEditClose}>Cancel</Button>
+              <Button variant="primary" type="submit">Submit</Button>
+            </Modal.Footer>
           </Form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleEditClose}>Cancel</Button>
-          <Button variant="primary" type="submit">Submit</Button>
-        </Modal.Footer>
       </Modal>
-     
+
       <div>
         <ul>
           {vocabList.length > 0 ? (
