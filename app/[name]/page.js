@@ -25,13 +25,15 @@ const SetPage = () => {
   const [vocabList, setVocabList] = useState([]);
 
   useEffect(() => {
-    const initialVocabList = fetchVocabList(name);
-    setVocabList(initialVocabList);
+    if (typeof window !== 'undefined') {
+      const initialVocabList = fetchVocabList(name);
+      setVocabList(initialVocabList);
+    }
   }, [name]);
 
   useEffect(() => {
-    const vocabKey = `vocabList_${name}`;
     if (typeof window !== 'undefined') {
+      const vocabKey = `vocabList_${name}`;
       localStorage.setItem(vocabKey, JSON.stringify(vocabList));
     }
   }, [vocabList, name]);
