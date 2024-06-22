@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+"use client"
 import { usePathname, useState } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
 
