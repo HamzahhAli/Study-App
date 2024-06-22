@@ -13,7 +13,7 @@ const fetchVocabList = (name) => {
   return [];
 };
 
-const SetPage = () => {
+const CardInfoPage = () => {
   const pathname = usePathname();
   const router = useRouter();
   const name = pathname.split('/').pop();
@@ -25,21 +25,31 @@ const SetPage = () => {
   const [vocabList, setVocabList] = useState([]);
 
   useEffect(() => {
-    const initialVocabList = fetchVocabList(name);
-    setVocabList(initialVocabList);
+    if (typeof window !== 'undefined') {
+      const initialVocabList = fetchVocabList(name);
+      setVocabList(initialVocabList);
+    }
   }, [name]);
 
   useEffect(() => {
-    const vocabKey = `vocabList_${name}`;
-    if (typeof window !== 'undefined' && vocabList.length > 0) {
+    if (typeof window !== 'undefined') {
+      const vocabKey = `vocabList_${name}`;
       localStorage.setItem(vocabKey, JSON.stringify(vocabList));
     }
   }, [vocabList, name]);
 
-  const handleClose = () => setShowModal(false);
+  const handleClose = () => {
+    setShowModal(false);
+    setEnteredVocab('');
+    setEnteredDef('');
+  };
   const handleShow = () => setShowModal(true);
 
-  const handleEditClose = () => setShowEditModal(false);
+  const handleEditClose = () => {
+    setShowEditModal(false);
+    setEnteredVocab('');
+    setEnteredDef('');
+  };
   const handleEditShow = (index) => {
     setEditIndex(index);
     setEnteredVocab(vocabList[index][0]);
@@ -94,6 +104,7 @@ const SetPage = () => {
                 type="text"
                 value={enteredVocab}
                 onChange={handleVocab}
+                required
               />
             </Form.Group>
             <Form.Group controlId="defInput">
@@ -103,6 +114,7 @@ const SetPage = () => {
                 style={{ height: '100px' }}
                 value={enteredDef}
                 onChange={handleDef}
+                required
               />
             </Form.Group>
           </Form>
@@ -125,6 +137,7 @@ const SetPage = () => {
                 type="text"
                 value={enteredVocab}
                 onChange={handleVocab}
+                required
               />
             </Form.Group>
             <Form.Group controlId="editDefInput">
@@ -134,6 +147,7 @@ const SetPage = () => {
                 style={{ height: '100px' }}
                 value={enteredDef}
                 onChange={handleDef}
+                required
               />
             </Form.Group>
           </Form>
@@ -181,4 +195,4 @@ const SetPage = () => {
   );
 };
 
-export default SetPage;
+export default CardInfoPage;
