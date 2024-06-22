@@ -1,5 +1,6 @@
 "use client"
-import { usePathname, useState } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
 
 // Helper function to fetch vocabulary list
@@ -14,7 +15,7 @@ const fetchVocabList = (name) => {
 
 const SetPage = () => {
   const pathname = usePathname();
-  const router = useState();
+  const router = useRouter();
   const name = pathname.split('/').pop();
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -24,18 +25,14 @@ const SetPage = () => {
   const [vocabList, setVocabList] = useState([]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const initialVocabList = fetchVocabList(name);
-      setVocabList(initialVocabList);
-    }
+    const initialVocabList = fetchVocabList(name);
+    setVocabList(initialVocabList);
   }, [name]);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const vocabKey = `vocabList_${name}`;
-      if (vocabList.length > 0) {
-        localStorage.setItem(vocabKey, JSON.stringify(vocabList));
-      }
+    const vocabKey = `vocabList_${name}`;
+    if (typeof window !== 'undefined' && vocabList.length > 0) {
+      localStorage.setItem(vocabKey, JSON.stringify(vocabList));
     }
   }, [vocabList, name]);
 
@@ -112,7 +109,7 @@ const SetPage = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-          <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+          <Button variant="primary" type="submit">Submit</Button>
         </Modal.Footer>
       </Modal>
 
@@ -143,10 +140,10 @@ const SetPage = () => {
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleEditClose}>Cancel</Button>
-          <Button variant="primary" onClick={handleEditSubmit}>Submit</Button>
+          <Button variant="primary" type="submit">Submit</Button>
         </Modal.Footer>
       </Modal>
-
+     
       <div>
         <ul>
           {vocabList.length > 0 ? (
@@ -176,7 +173,7 @@ const SetPage = () => {
         </ul>
       </div>
       <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-        <Button variant="primary" onClick={handleShow} style={{ width: '1000px', height: '100px', fontSize: '20px' }}>
+        <Button variant="primary" onClick={handleShow} style={{ width: '500px', height: '70px', marginTop: '20px', fontSize: '20px' }}>
           Add Card
         </Button>
       </div>
