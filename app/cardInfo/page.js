@@ -14,7 +14,7 @@ const fetchVocabList = (name) => {
 
 const SetPage = () => {
   const pathname = usePathname();
-  const router = useRouter();
+  const router = useState();
   const name = pathname.split('/').pop();
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
