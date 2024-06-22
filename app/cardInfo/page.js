@@ -174,5 +174,37 @@ const CardInfoPage = () => {
         <ul>
           {vocabList.length > 0 ? (
             vocabList.map((vocab, index) => (
-              <div className="card bg-light mb-3" style={{ maxWidth: "90rem" }} key={index}>
-                <div className="
+              <div className="card bg-light mb-3" style={{ maxWidth: '90rem' }} key={index}>
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3>{vocab[0]}</h3>
+                  <div>
+                    <Button variant="warning" onClick={() => handleEditShow(index)} style={{ marginRight: '10px' }}>Edit</Button>
+                    <Button variant="danger" onClick={() => handleDelete(index)}>Delete</Button>
+                  </div>
+                </div>
+                <div className="card-body">
+                  <p className="card-text">{vocab[1]}</p>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="card bg-light mb-3" style={{ maxWidth: '90rem', height: '300px' }}>
+              <div className="card-body">
+                <p className="card-text" style={{ textAlign: 'center', paddingTop: '100px' }}>
+                  Press "add card" to get started
+                </p>
+              </div>
+            </div>
+          )}
+        </ul>
+      </div>
+      <div style={{ textAlign: 'center', marginBottom: '70px' }}>
+        <Button variant="primary" onClick={handleShow} style={{ width: '500px', height: '70px', marginTop: '20px', fontSize: '20px' }}>
+          Add Card
+        </Button>
+      </div>
+    </div>
+  );
+};
+
+export default CardInfoPage;
