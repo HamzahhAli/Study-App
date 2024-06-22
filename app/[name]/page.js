@@ -3,11 +3,14 @@ import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Button, Modal, Form } from 'react-bootstrap';
 
-
+// Helper function to fetch vocabulary list
 const fetchVocabList = (name) => {
-  const vocabKey = `vocabList_${name}`;
-  const storedVocabList = JSON.parse(localStorage.getItem(vocabKey));
-  return storedVocabList || [];
+  if (typeof window !== 'undefined') {
+    const vocabKey = `vocabList_${name}`;
+    const storedVocabList = JSON.parse(localStorage.getItem(vocabKey));
+    return storedVocabList || [];
+  }
+  return [];
 };
 
 const SetPage = () => {
@@ -28,7 +31,7 @@ const SetPage = () => {
 
   useEffect(() => {
     const vocabKey = `vocabList_${name}`;
-    if (vocabList.length > 0) {
+    if (typeof window !== 'undefined') {
       localStorage.setItem(vocabKey, JSON.stringify(vocabList));
     }
   }, [vocabList, name]);
@@ -83,12 +86,7 @@ const SetPage = () => {
 
   return (
     <div>
-      <Button 
-        variant="secondary" 
-        onClick={() => router.push('/')} 
-        className="mb-4" 
-        style={{ marginLeft: '20px', marginTop: '20px' }}
-      >
+      <Button variant="secondary" onClick={() => router.push('/')} className="mb-4" style={{ marginLeft: '10px', marginTop: '10px' }}>
         Back to Home
       </Button>
 
@@ -104,6 +102,7 @@ const SetPage = () => {
                 type="text"
                 value={enteredVocab}
                 onChange={handleVocab}
+                required
               />
             </Form.Group>
             <Form.Group controlId="defInput">
@@ -113,13 +112,14 @@ const SetPage = () => {
                 style={{ height: '100px' }}
                 value={enteredDef}
                 onChange={handleDef}
+                required
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-          <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+          <Button variant="primary" type="submit">Submit</Button>
         </Modal.Footer>
       </Modal>
 
@@ -135,6 +135,7 @@ const SetPage = () => {
                 type="text"
                 value={enteredVocab}
                 onChange={handleVocab}
+                required
               />
             </Form.Group>
             <Form.Group controlId="editDefInput">
@@ -144,29 +145,30 @@ const SetPage = () => {
                 style={{ height: '100px' }}
                 value={enteredDef}
                 onChange={handleDef}
+                required
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleEditClose}>Cancel</Button>
-          <Button variant="primary" onClick={handleEditSubmit}>Submit</Button>
+          <Button variant="primary" type="submit">Submit</Button>
         </Modal.Footer>
       </Modal>
-
+     
       <div>
         <ul>
           {vocabList.length > 0 ? (
             vocabList.map((vocab, index) => (
               <div className="card bg-light mb-3" style={{ maxWidth: "90rem" }} key={index}>
-                <div className="card-body">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3>{vocab[0]}</h3>
-                    <div>
-                      <Button variant="warning" onClick={() => handleEditShow(index)} style={{ marginRight: '10px' }}>Edit</Button>
-                      <Button variant="danger" onClick={() => handleDelete(index)}>Delete</Button>
-                    </div>
+                <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <h3>{vocab[0]}</h3>
+                  <div>
+                    <Button variant="warning" onClick={() => handleEditShow(index)} style={{ marginRight: '10px' }}>Edit</Button>
+                    <Button variant="danger" onClick={() => handleDelete(index)}>Delete</Button>
                   </div>
+                </div>
+                <div className="card-body">
                   <p className="card-text">{vocab[1]}</p>
                 </div>
               </div>
@@ -183,13 +185,11 @@ const SetPage = () => {
         </ul>
       </div>
       <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-        <Button variant="primary" onClick={handleShow} style={{ width: '500px', height: '75px', marginTop: '20px', fontSize: '20px' }}>
+        <Button variant="primary" onClick={handleShow} style={{ width: '500px', height: '70px', marginTop: '20px', fontSize: '20px' }}>
           Add Card
         </Button>
       </div>
-      
     </div>
-    
   );
 };
 
