@@ -1,8 +1,8 @@
-"use client"
+"use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button, Modal, Form, Card, Container, Row, Col } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css'; 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HomePage = () => {
   const [packetName, setPacketName] = useState('');
@@ -10,12 +10,23 @@ const HomePage = () => {
   const [showModal, setShowModal] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [currentEditIndex, setCurrentEditIndex] = useState(null);
-  const [nameList, setNameList] = useState(JSON.parse(localStorage.getItem('nameList')) || []);
-  const [descriptionList, setDescriptionList] = useState(JSON.parse(localStorage.getItem('descriptionList')) || {});
+  const [nameList, setNameList] = useState([]);
+  const [descriptionList, setDescriptionList] = useState({});
 
   useEffect(() => {
-    localStorage.setItem('nameList', JSON.stringify(nameList));
-    localStorage.setItem('descriptionList', JSON.stringify(descriptionList));
+    if (typeof window !== 'undefined') {
+      const storedNameList = JSON.parse(localStorage.getItem('nameList')) || [];
+      const storedDescriptionList = JSON.parse(localStorage.getItem('descriptionList')) || {};
+      setNameList(storedNameList);
+      setDescriptionList(storedDescriptionList);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('nameList', JSON.stringify(nameList));
+      localStorage.setItem('descriptionList', JSON.stringify(descriptionList));
+    }
   }, [nameList, descriptionList]);
 
   const handleClose = () => {
@@ -25,6 +36,7 @@ const HomePage = () => {
     setEditMode(false);
     setCurrentEditIndex(null);
   };
+
   const handleShow = () => setShowModal(true);
 
   const handleInput = (e) => setPacketName(e.target.value);
@@ -44,7 +56,9 @@ const HomePage = () => {
     } else {
       setNameList([...nameList, packetName]);
       setDescriptionList({ ...descriptionList, [packetName]: description });
-      localStorage.setItem(`vocabList_${packetName}`, JSON.stringify([])); 
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(`vocabList_${packetName}`, JSON.stringify([]));
+      }
     }
     setPacketName('');
     setDescription('');
@@ -57,7 +71,9 @@ const HomePage = () => {
     const updatedDescriptionList = { ...descriptionList };
     delete updatedDescriptionList[name];
     setDescriptionList(updatedDescriptionList);
-    localStorage.removeItem(`vocabList_${name}`);
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem(`vocabList_${name}`);
+    }
   };
 
   const handleEdit = (index) => {
@@ -70,15 +86,6 @@ const HomePage = () => {
 
   return (
     <Container>
-      <div className="description bg-light text-dark p-3 mb-4">
-        <div className="container">
-          <h2>Make your flashcards here!</h2>
-          <p>
-            Add your card set over here. Afterwards, you can start adding cards in your set!
-          </p>
-        </div>
-      </div>
-
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{editMode ? 'Edit Set' : 'Add Set'}</Modal.Title>
