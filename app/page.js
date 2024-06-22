@@ -164,49 +164,6 @@ const HomePage = () => {
           Add New Set
         </Button>
       </div>
-
-      <style jsx>{`
-        .set-title {
-          font-size: 1.5rem;
-          font-family: 'Arial', sans-serif;
-          font-weight: bold;
-          margin-bottom: 15px;
-        }
-        .card-description {
-          display: -webkit-box;
-          -webkit-line-clamp: 5;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .card {
-          border: 2px solid #f0f0f0;
-          transition: transform 0.3s, box-shadow 0.3s;
-        }
-        .card:hover {
-          transform: translateY(-10px);
-          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        }
-        .fixed-bottom {
-          position: fixed;
-          left: 0;
-          right: 0;
-          bottom: 0;
-        }
-        .add-new-set-button {
-          width: 1000px;
-          height: 50px;
-          font-size: 20px;
-          background-color: #007bff;
-          border-color: #007bff;
-          color: white;
-          transition: background-color 0.3s, color 0.3s;
-        }
-        .add-new-set-button:hover {
-          background-color: white;
-          color: black;
-        }
-      `}</style>
     </Container>
   );
 };
