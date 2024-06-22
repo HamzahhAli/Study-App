@@ -36,9 +36,11 @@ const HomePage = () => {
     setEditMode(false);
     setCurrentEditIndex(null);
   };
+
   const handleShow = () => setShowModal(true);
 
   const handleInput = (e) => setPacketName(e.target.value);
+
   const handleDescription = (e) => setDescription(e.target.value);
 
   const handleSubmit = (e) => {
@@ -85,10 +87,6 @@ const HomePage = () => {
 
   return (
     <Container>
-      <div className="description bg-light text-dark p-3 mb-4">
-        
-      </div>
-
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>{editMode ? 'Edit Set' : 'Add Set'}</Modal.Title>
