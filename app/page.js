@@ -86,12 +86,7 @@ const HomePage = () => {
   return (
     <Container>
       <div className="description bg-light text-dark p-3 mb-4">
-        <div className="container">
-          <h2>Make your flashcards here!</h2>
-          <p>
-            Add your card set over here. Afterwards, you can start adding cards in your set!
-          </p>
-        </div>
+        
       </div>
 
       <Modal show={showModal} onHide={handleClose}>
